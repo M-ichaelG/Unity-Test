@@ -1,0 +1,20 @@
+Optimization Explanation:
+-Made GameController as singleton
+
+-UIController.SetScore will only be called whenever a reward is collected instead of calling it in Update () which is called every frame for optimization
+
+-GameController holds reference to these components in order to reduce the use of FindObjectOfType:
+ -UIController
+ -GameField
+ -AStarPathFinding
+ -AICharacter
+
+-Changing reference type of rewardPrefab from GameObject to Reward on GameField.cs to make it simpler to pass on reference to List<Reward> on GameController.cs
+
+-Changing Destroy (gameObject) to gameObject.SetActive (false) inside OnTriggerEnter on Reward.cs as it is more efficient and future proof
+ -Future proof as in if the game has multiple stages, the rewards can be pooled and be put on random cells in the next stage instead of instantiating them all again
+
+-Change Score Text and Win Text colour into black for better visibility
+
+-Showing particle explosion by using Coroutine which is checked previously if the Coroutine is still running or not before starting it again
+ - This is related to future proofness in case the game has multiple stages and decided to do object pooling for the reward game objects to ensure at the next stage we can show the explosion particle from the beginning
